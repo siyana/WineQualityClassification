@@ -1,4 +1,4 @@
-basePath = "E:\\Projects\\WineQuality\\WineQualityClassification\\"
+source(paste(getwd(),"\\src\\global_constants.R", sep = ""))
 source(paste(basePath, "\\src\\functions.R", sep=""))
 
 redWinePath = paste(basePath,"\\resources\\winequality-red.csv",sep = "")

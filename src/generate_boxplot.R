@@ -1,0 +1,33 @@
+
+source(paste(getwd(),"\\src\\global_constants.R", sep = ""))
+source(paste(basePath, "\\src\\graphics_functions.R", sep=""))
+
+whiteWine = read.csv(whiteWineTestPath)
+
+columnNames = names(whiteWine)
+attach(whiteWine )
+for (i in 1:length(columnNames)){
+	if (columnNames[i] != "quality") {
+print(columnNames[i])
+	    column = eval(parse(text = columnNames[i]))
+	    png(filename = boxplotFileName(varToString(whiteWine), columnNames[i]))
+	  	 boxplotByQuality(whiteWine, column, columnNames[i])
+	    dev.off()
+	}
+}
+
+detach(whiteWine)
+
+redWine = read.csv(whiteWineTrainPath)
+attach(redWine)
+columnNames = names(redWine)
+for (i in 1:length(columnNames)){
+	if (columnNames[i] != "quality") {
+		column = eval(parse(text = columnNames[i]))
+		png(filename=boxplotFileName(varToString(redWine), columnNames[i]))
+			boxplotByQuality(redWine, column, columnNames[i])
+		dev.off()
+	}
+}
+
+detach(redWine)
