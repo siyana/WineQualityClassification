@@ -1,5 +1,6 @@
 source(paste(getwd(),"\\src\\global_constants.R", sep = ""))
 source(paste(basePath, "\\src\\functions.R", sep=""))
+library(hydroGOF)
 
 #WhiteWineTrain
 whiteWineTrain = read.csv(whiteWineTrainPath)
@@ -19,5 +20,9 @@ b = as.factor(whiteWineTest$quality)
 testData = data.frame(whiteWineTest[,1:11],quality = b)
 pred <- predict(rf, newdata=testData)
 table(pred, testData$quality)
+
+#estimate RMSE
+predNum = as.numeric(pred)
+rmse(predNum,whiteWineTest$quality)
 
 plot(table(rf), table(pred, testData$quality))
