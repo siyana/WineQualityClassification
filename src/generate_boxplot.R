@@ -2,13 +2,12 @@
 source(paste(getwd(),"\\src\\global_constants.R", sep = ""))
 source(paste(basePath, "\\src\\graphics_functions.R", sep=""))
 
-whiteWine = read.csv(whiteWineTestPath)
+whiteWine = read.csv(whiteWineTrainPath)
 
 columnNames = names(whiteWine)
 attach(whiteWine )
 for (i in 1:length(columnNames)){
 	if (columnNames[i] != "quality") {
-print(columnNames[i])
 	    column = eval(parse(text = columnNames[i]))
 	    png(filename = boxplotFileName(varToString(whiteWine), columnNames[i]))
 	  	 boxplotByQuality(whiteWine, column, columnNames[i])
