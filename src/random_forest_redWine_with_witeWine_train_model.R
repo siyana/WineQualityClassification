@@ -27,10 +27,3 @@ pred <- predict(randomForestModel, newdata=testData)
  #estimate RMSE
  predNum = as.numeric(pred)
  err = rmse(predNum,redWineTest$quality)
-
-png(filename=boxplotFileName("whiteWine", "rmse_on_redWine_with_witeWine_train_model"))
-plot(errorsDF)
-dev.off()
-
-errorsRedWinePath = paste(basePath,"results//redWineRandomForestErrorswith_witeWine_train_model.csv",sep = "")
-write.csv(errorsDF, file = errorsRedWinePath,row.names = FALSE, fileEncoding = "UTF-8")
