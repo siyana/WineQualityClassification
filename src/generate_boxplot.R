@@ -17,7 +17,7 @@ for (i in 1:length(columnNames)){
 
 detach(whiteWine)
 
-redWine = read.csv(whiteWineTrainPath)
+redWine = read.csv(redWineTrainPath)
 attach(redWine)
 columnNames = names(redWine)
 for (i in 1:length(columnNames)){
