@@ -23,15 +23,18 @@ varToString = function(x){
 precision <- function(table){
    mat = as.matrix(table)
    precision = diag(mat) / rowSums(mat)
+   replace(precision, is.na(precision), 0)
 }
 
 recall <- function(table) {
    mat = as.matrix(table)
    recall <- diag(mat) / colSums(mat)
+   replace(recall, is.na(recall), 0)
 }
 
 f1 <- function(table) {
   recall = recall(table)
   precision = precision(table)
   f1 = 2*recall*precision/(recall + precision)
+  replace(f1, is.na(f1), 0)
 }

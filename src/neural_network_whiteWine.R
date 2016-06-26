@@ -1,4 +1,4 @@
-install.packages("RSNNS")
+#install.packages("RSNNS")
 library("Rcpp")
 library("RSNNS")
 
@@ -16,7 +16,7 @@ attach(whiteWineTest)
 
 inputTrain = whiteWineTrain[,1:11];
 outputTrain = decodeClassLabels(whiteWineTrain$quality)
-trainData <- splitForTrainingAndTest(inputTrain , outputTrain , ratio = 0.1)
+trainData <- splitForTrainingAndTest(inputTrain , outputTrain , ratio = 0)
 trainData <- normTrainingAndTestSet(trainData)
 
 maxis = 1000
@@ -42,19 +42,20 @@ for(i in 1:100) {
   write.table(y, paste(basePath,"//matrix_test.csv", sep = ""), append = TRUE)
 }
 
+empty_col = c(0,0,0,0,0,0,0)
 # best models l = 0.15,0.32
 l = 0.15
 model_15 <- mlp(trainData$inputsTrain, trainData$targetsTrain, size = size,
 learnFuncParams = l, maxis = maxis)
 predictions <- predict(model_15,inputTest)
-matrix_15 = confusionMatrix(trainData$targetsTrain, fitted.values(model_15))
-matrix_15 = cbind(c(0,0,0,0,0,0,0),matrix_15,c(0,0,0,0,0,0,0))
+matrix_15 = confusionMatrix(outputTest, predictions)
+matrix_15 = cbind(empty_col,empty_col,matrix_15,empty_col)
 f1(matrix_15)
 
-l = 0.32
+l = 0.33
 model_32 <- mlp(trainData$inputsTrain, trainData$targetsTrain, size = size,
 learnFuncParams = l, maxis = maxis)
 predictions <- predict(model_32,inputTest)
-matrix_32 = confusionMatrix(trainData$targetsTrain, fitted.values(model_32))
-matrix_32 = cbind(c(0,0,0,0,0,0,0),matrix_32,c(0,0,0,0,0,0,0))
+matrix_32 = confusionMatrix(outputTest, predictions)
+matrix_32 = cbind(empty_col,empty_col,matrix_32,empty_col, empty_col)
 f1(matrix_32)

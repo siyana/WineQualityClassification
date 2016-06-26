@@ -1,5 +1,5 @@
-#Train on whiteWine test with redWine
 library (ROCR);
+
 source(paste(getwd(),"\\src\\global_constants.R", sep = ""))
 source(paste(basePath, "\\src\\functions.R", sep=""))
 #install.packages("randomForest")
@@ -13,24 +13,26 @@ attach(whiteWineTrain)
 a = as.factor(whiteWineTrain$quality)
 trainData = data.frame(whiteWineTrain[,1:11],quality = a)
 
-redWineTest = read.csv(redWineTrainPath)
-attach(redWineTest)
-b = as.factor(redWineTest$quality)
-testData = data.frame(redWineTest[,1:11],quality = b)
+whiteWineTest = read.csv(whiteWineTestPath)
+attach(whiteWineTest)
+b = as.factor(whiteWineTest$quality)
+testData = data.frame(whiteWineTest[,1:11],quality = b)
 
-randomForestModel <- randomForest(trainData$quality ~ ., data=trainData, ntree=15, proximity=TRUE)
-
+randomForestModel <- randomForest(trainData$quality ~ ., data=trainData, ntree=10, proximity=TRUE)
+#table(predict(rf), data$quality)
+#plot(rf)
+#legend()
 
 pred <- predict(randomForestModel, newdata=testData)
-
+#table(pred, testData$quality)
 
  #estimate RMSE
  predNum = as.numeric(pred)
- err = rmse(predNum,redWineTest$quality)
+ err = rmse(predNum,whiteWineTest$quality)
 
-png(filename=boxplotFileName("whiteWine", "rmse_on_redWine_with_witeWine_train_model"))
+png(filename=boxplotFileName("whiteWine", "rmse"))
 plot(errorsDF)
 dev.off()
 
-errorsRedWinePath = paste(basePath,"results//redWineRandomForestErrorswith_witeWine_train_model.csv",sep = "")
-write.csv(errorsDF, file = errorsRedWinePath,row.names = FALSE, fileEncoding = "UTF-8")
+errorsWhiteWinePath = paste(basePath,"results//whiteWineRandomForestErrors.csv",sep = "")
+write.csv(errorsDF, file = errorsWhiteWinePath,row.names = FALSE, fileEncoding = "UTF-8")
