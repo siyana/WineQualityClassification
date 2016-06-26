@@ -1,7 +1,7 @@
 source(paste(getwd(),"\\src\\global_constants.R", sep = ""))
 
 splitSet <- function (set, testPath, trainPath) {
-    indexes <- sample(2, nrow(set), replace=TRUE, prob=c(0.7, 0.3)) #create a sample list ot 1/2
+    indexes <- sample(2, nrow(set), replace=TRUE, prob=c(0.9, 0.1)) #create a sample list ot 1/2
     trainData <- set[indexes == 1,] # indexes == 1 returns true or false for each value
     testData <- set[indexes == 2,] 
 	
