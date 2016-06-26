@@ -17,3 +17,21 @@ boxplotFileName <- function(xName, xColumnName) {
 varToString = function(x){
     deparse(substitute(x))
 }
+
+#Evaluation
+
+precision <- function(table){
+   mat = as.matrix(table)
+   precision = diag(mat) / rowSums(mat)
+}
+
+recall <- function(table) {
+   mat = as.matrix(table)
+   recall <- diag(mat) / colSums(mat)
+}
+
+f1 <- function(table) {
+  recall = recall(table)
+  precision = precision(table)
+  f1 = 2*recall*precision/(recall + precision)
+}
