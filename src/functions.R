@@ -20,6 +20,18 @@ varToString = function(x){
 
 #Evaluation
 
+diagSum <- function(outputTest, matrix){
+  allCategories = 1:ncol(outputTest)
+  sum = 0
+  for(i in allCategories){
+    strI = toString(i)
+    if(strI %in% colnames(matrix)) {
+      sum = sum + matrix[strI,strI]
+    }
+  }
+  sum
+}
+
 precision <- function(table){
    mat = as.matrix(table)
    precision = diag(mat) / rowSums(mat)
