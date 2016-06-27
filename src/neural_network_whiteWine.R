@@ -22,12 +22,17 @@ trainData <- normTrainingAndTestSet(trainData)
 maxis = 1000
 size = 100
 
-write(paste("max iter:",maxis,"size:",size), paste(basePath,"//matrix_train.csv", sep = ""), append = TRUE)
-write(paste("max iter:",maxis,"size:",size), paste(basePath,"//matrix_test.csv", sep = ""), append = TRUE)
-
-
 inputTest = whiteWineTest[,1:11]
 outputTest = decodeClassLabels(whiteWineTest$quality)
+
+whiteTrainResultsPath = paste(basePath,"//results//NN//whiteWine_matrix_train.csv", sep = "")
+whiteTestResultsPath =  paste(basePath,"//results//NN//whiteWine_matrix_test.csv", sep = "")
+write(paste("max iter:",maxis,"size:",size), whiteTrainResultsPath , append = FALSE)
+write(paste("max iter:",maxis,"size:",size), whiteTestResultsPath , append = FALSE)
+
+maxSum = -1;
+maxL = -1;
+maxModelMatrix = NULL
 for(i in 1:100) {
   print(i)
   l = i/100
@@ -35,27 +40,24 @@ for(i in 1:100) {
   learnFuncParams = l, maxis = maxis)
   predictions <- predict(model,inputTest)
   x = confusionMatrix(trainData$targetsTrain, fitted.values(model))
-  write(paste("-----", "l =",l), paste(basePath,"//matrix_train.csv", sep = ""), append = TRUE)
-  write.table(x, paste(basePath,"//matrix_train.csv", sep = ""), append = TRUE)
+  write(paste("-----", "l =",l), whiteTrainResultsPath , append = TRUE)
+  write.table(x, whiteTrainResultsPath , append = TRUE)
   y = confusionMatrix(outputTest, predictions)
-  write(paste("-----", "l =",l), paste(basePath,"//matrix_test.csv", sep = ""), append = TRUE)
-  write.table(y, paste(basePath,"//matrix_test.csv", sep = ""), append = TRUE)
+  currentSum = diagSum(outputTest, y)
+  if (currentSum > maxSum) {
+    maxSum = currentSum
+    maxL = l;
+    maxModelMatrix = y 
+  }
+  write(paste("-----", "l =",l), whiteTestResultsPath , append = TRUE)
+  write(paste("-----", "accuracy: ", currentSum/nrow(outputTest)), whiteTestResultsPath , append = TRUE)
+  write.table(y,whiteTestResultsPath , append = TRUE)
 }
 
+write(paste("-----\n", "maxAccuracy: ", maxSum/nrow(outputTest), ", l = ", maxL), whiteTestResultsPath, append = TRUE)
 empty_col = c(0,0,0,0,0,0,0)
-# best models l = 0.15,0.32
-l = 0.15
-model_15 <- mlp(trainData$inputsTrain, trainData$targetsTrain, size = size,
-learnFuncParams = l, maxis = maxis)
-predictions <- predict(model_15,inputTest)
-matrix_15 = confusionMatrix(outputTest, predictions)
-matrix_15 = cbind(empty_col,empty_col,matrix_15,empty_col)
-f1(matrix_15)
+matrix = cbind(empty_col, empty_col,maxModelMatrix,empty_col, empty_col, empty_col)
 
-l = 0.33
-model_32 <- mlp(trainData$inputsTrain, trainData$targetsTrain, size = size,
-learnFuncParams = l, maxis = maxis)
-predictions <- predict(model_32,inputTest)
-matrix_32 = confusionMatrix(outputTest, predictions)
-matrix_32 = cbind(empty_col,empty_col,matrix_32,empty_col, empty_col)
-f1(matrix_32)
+write.table(paste("-----\n", "f1: ", f1(matrix)), whiteTestResultsPath, append = TRUE)
+write.table(paste("precision: ", precision(matrix)), whiteTestResultsPath, append = TRUE)
+write.table(paste("recall: ", recall(matrix)), whiteTestResultsPath, append = TRUE)
