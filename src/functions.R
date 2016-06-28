@@ -23,13 +23,16 @@ varToString = function(x){
 diagSum <- function(outputTest, matrix){
   allCategories = 1:ncol(outputTest)
   sum = 0
+  delimiter = 0;
+  emptyCol = c(0,0,0,0,0,0,0)
   for(i in allCategories){
     strI = toString(i)
     if(strI %in% colnames(matrix)) {
       sum = sum + matrix[strI,strI]
+      delimiter = delimiter + sum(matrix[strI,])
     }
   }
-  sum
+  c(sum,delimiter)
 }
 
 precision <- function(table){
