@@ -7,3 +7,5 @@ redWineTestPath = paste(basePath,"\\resources\\redWineTest.csv",sep = "")
 
 whiteWineTrainPath = paste(basePath,"\\resources\\whiteWineTrain.csv",sep = "")
 whiteWineTestPath = paste(basePath,"\\resources\\whiteWineTest.csv",sep = "")
+
+mixedWineTrainPath = paste(basePath, "\\resources\\mixedWineTrain.csv",sep = "")
