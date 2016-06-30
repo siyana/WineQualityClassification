@@ -25,3 +25,10 @@ pred <- predict(randomForestModel, newdata=testData)
  #estimate RMSE
  predNum = as.numeric(pred)
  err = rmse(predNum,whiteWineTest$quality)
+
+table = table(pred,whiteWineTest$quality)
+emptyRow = c(0,0,0,0,0,0,0)
+table = rbind(table, emptyRow)
+precision(table)
+recall(table)
+f1(table)

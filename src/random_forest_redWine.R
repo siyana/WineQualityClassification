@@ -18,6 +18,7 @@ testData = data.frame(redWineTest[,1:11],quality = b)
 
 errorsDF = data.frame()
 for (i in 10:100) {
+#i = 15
     randomForestModel <- randomForest(trainData$quality ~ ., data=trainData, ntree=i, proximity=TRUE)
     #table(predict(rf), data$quality)
     #plot(rf)
@@ -25,7 +26,12 @@ for (i in 10:100) {
 
     pred <- predict(randomForestModel, newdata=testData)
     #table(pred, testData$quality)
-
+#table = table(pred,testData$quality)
+#emptyRow = c(0,0,0,0,0,0,0)
+#table = cbind(emptyRow,table )
+#precision(table)
+#recall(table)
+#f1(table)
     #estimate RMSE
     predNum = as.numeric(pred)
     err = rmse(predNum,redWineTest$quality)
